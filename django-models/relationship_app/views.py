@@ -9,12 +9,17 @@ from .forms import BookForm
 from django.views.generic import DetailView
 from django.views.generic.detail import DetailView
 from .models import Library  # Adjust the model import as needed
-from django.contrib.auth.forms import UserCreationForm
+
 
 class LibraryDetailView(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
+
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 
 def register(request):
     if request.method == 'POST':
@@ -26,7 +31,7 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
 
-from django.contrib.auth import login
+
 def user_login(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -42,4 +47,3 @@ def user_logout(request):
     return render(request, 'logout.html')
 
 
-["from django.contrib.auth import login", "from django.contrib.auth.forms import UserCreationForm"]
