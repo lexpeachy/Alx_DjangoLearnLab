@@ -21,10 +21,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
-from django.contrib import admin
-from django.urls import path, include
+# from django.contrib import admin
+# from django.urls import path, include
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('relationship_app/', include('relationship_app.urls')),  # Include relationship_app URLs
-]
+# urlpatterns = [
+#     path('admin/', admin.site.urls),
+#     path('relationship_app/', include('relationship_app.urls')),  # Include relationship_app URLs
+# ]
