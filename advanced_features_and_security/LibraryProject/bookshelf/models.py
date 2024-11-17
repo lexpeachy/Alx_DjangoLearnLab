@@ -33,3 +33,14 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, date_of_birth, password, **extra_fields)
 
+class prefered(models.Model):
+    title= models.CharField(max_length= 200)
+    content = models.TextField()
+
+    class Meta:
+        permissions = [
+            ("can_view", "can view book"),
+            ("can_create", "can create book"),
+            ("can_edit", "can edit book"),
+            ("can_delete", "can delete book"),
+        ]
