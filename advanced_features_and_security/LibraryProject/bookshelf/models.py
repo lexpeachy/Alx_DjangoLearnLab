@@ -32,15 +32,16 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
 
         return self.create_user(email, date_of_birth, password, **extra_fields)
+from django.db import models
 
-class prefered(models.Model):
-    title= models.CharField(max_length= 200)
+class Article(models.Model):
+    title = models.CharField(max_length=100)
     content = models.TextField()
 
     class Meta:
         permissions = [
-            ("can_view", "can view book"),
-            ("can_create", "can create book"),
-            ("can_edit", "can edit book"),
-            ("can_delete", "can delete book"),
+            ("can_view", "Can view article"),
+            ("can_create", "Can create article"),
+            ("can_edit", "Can edit article"),
+            ("can_delete", "Can delete article"),
         ]
