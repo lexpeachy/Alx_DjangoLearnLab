@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from django.shortcuts import render
-from .models import Book
+from .models import Book, ExampleForm
 
 def search_books(request):
     query = request.GET.get('q')
