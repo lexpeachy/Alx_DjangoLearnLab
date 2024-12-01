@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import mixins, generics
 from .models import Book
 from .serializers import BookSerializer
-from rest_framework.permissions import IsAuthenticated, AllowAny 
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
