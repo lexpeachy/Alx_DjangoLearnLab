@@ -2,9 +2,17 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from django.urls import reverse
 from .models import Author, Book
+from django.contrib.auth.models import User
 
 class BookAPITestCase(APITestCase):
     def setUp(self):
+        # Create a test user
+        self.user = User.objects.create_user(username="testuser", password="password123")
+        
+        # Log in the user
+        self.client.login(username="testuser", password="password123")
+
+        # Set up test data
         self.author = Author.objects.create(name="J.K. Rowling")
         self.book = Book.objects.create(
             title="Harry Potter",
@@ -12,8 +20,7 @@ class BookAPITestCase(APITestCase):
             author=self.author
         )
         self.book_url = reverse('book-list')  # Replace 'book-list' with the actual name of your endpoint
-        self.book_detail_url = reverse('book-detail', kwargs={'pk': self.book.id})  # Replace 'book-detail' appropriately
-
+        self.book_detail_url = reverse('book-detail', kwargs={'pk': self.book.id})
     def test_create_book(self):
         data = {
             "title": "New Book",
