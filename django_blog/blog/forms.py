@@ -12,15 +12,14 @@ class UserRegistrationForm(UserCreationForm):
 
 from django import forms
 from .models import Post
-from taggit.forms import TagField  # Import the TagField from django-taggit
+from taggit.forms import TagWidget, TagField
 
 class PostForm(forms.ModelForm):
-    # Use TagField to enable tagging
-    tags = TagField(required=False, help_text="Add comma-separated tags for this post.")
+    tags = TagField(widgets = TagWidget())
 
     class Meta:
         model = Post
-        fields = ['title', 'content', 'tags']  # Include the 'tags' field
+        fields = ['title', 'content', 'tags']
 
 
 
