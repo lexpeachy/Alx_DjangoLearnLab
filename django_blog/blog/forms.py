@@ -13,12 +13,18 @@ class UserRegistrationForm(UserCreationForm):
 from .models import Post
 from taggit.forms import TagWidget
 
-class PostForm(forms.ModelForm):
-    tags = TagField(widget=TagWidget(attrs={'placeholder': 'Comma-separated tags'}))
+from django import forms
+import autocomplete_light
+from autocomplete_light.contrib import taggit_tagfield
+from models import MyModel
 
+class MyModelForm(forms.ModelForm):
+    tags = taggit_tagfield.TagField(widget=taggit_tagfield.TagWidget('TagAutocomplete'))
     class Meta:
-        model = Post
-        fields = ['title', 'content', 'tags']
+        model = MyModel
+        widgets = {
+            'tags': autocomplete_light.TextWidget('TagAutocomplete'),
+        }
 
 
 from .models import Comment
