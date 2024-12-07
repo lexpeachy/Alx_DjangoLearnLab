@@ -74,24 +74,41 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic.edit import UpdateView, DeleteView
+from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from .models import Post, Comment
-from .forms import CommentForm
+from .form import CommentForm
+from django.urls import reverse_lazy
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/add_comment.html'
+
+    def form_valid(self, form):
+        # Automatically assign the current post and user to the comment
+        form.instance.post = get_object_or_404(Post, pk=self.kwargs['post_id'])
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # Redirect to the post detail page after comment creation
+        return self.object.post.get_absolute_url()
 
 @login_required
-def add_comment(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.author = request.user
-            comment.save()
-            return redirect('post-detail', pk=post.id)
-    else:
-        form = CommentForm()
-    return render(request, 'blog/add_comment.html', {'form': form, 'post': post})
+# def add_comment(request, post_id):
+#     post = get_object_or_404(Post, id=post_id)
+#     if request.method == 'POST':
+#         form = CommentForm(request.POST)
+#         if form.is_valid():
+#             comment = form.save(commit=False)
+#             comment.post = post
+#             comment.author = request.user
+#             comment.save()
+#             return redirect('post-detail', pk=post.id)
+#     else:
+#         form = CommentForm()
+#     return render(request, 'blog/add_comment.html', {'form': form, 'post': post})
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
