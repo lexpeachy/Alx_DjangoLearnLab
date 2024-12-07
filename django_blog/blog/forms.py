@@ -11,12 +11,14 @@ class UserRegistrationForm(UserCreationForm):
 
 
 from .models import Post
+from taggit.forms import TagField
 
 class PostForm(forms.ModelForm):
+    tags = TagField()  
+
     class Meta:
         model = Post
-        fields = ['title', 'content']
-
+        fields = ['title', 'content', 'tags']
 from .models import Comment
 
 class CommentForm(forms.ModelForm):

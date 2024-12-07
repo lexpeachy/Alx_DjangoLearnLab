@@ -79,7 +79,7 @@ from .models import Post, Comment
 from .forms import CommentForm
 from django.urls import reverse_lazy
 
-
+@login_required
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
@@ -95,20 +95,6 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         # Redirect to the post detail page after comment creation
         return self.object.post.get_absolute_url()
 
-@login_required
-# def add_comment(request, post_id):
-#     post = get_object_or_404(Post, id=post_id)
-#     if request.method == 'POST':
-#         form = CommentForm(request.POST)
-#         if form.is_valid():
-#             comment = form.save(commit=False)
-#             comment.post = post
-#             comment.author = request.user
-#             comment.save()
-#             return redirect('post-detail', pk=post.id)
-#     else:
-#         form = CommentForm()
-#     return render(request, 'blog/add_comment.html', {'form': form, 'post': post})
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
@@ -129,3 +115,19 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
+    
+from django.db.models import Q
+
+def search_posts(request):
+    query = request.GET.get('q', '')
+    results = Post.objects.filter(
+        Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query)
+    ).distinct()
+    return render(request, 'blog/search_results.html', {'query': query, 'results': results})
+
+from taggit.models import Tag
+
+def posts_by_tag(request, tag):
+    tag = get_object_or_404(Tag, slug=tag)
+    posts = Post.objects.filter(tags__in=[tag])
+    return render(request, 'blog/tag_posts.html', {'tag': tag, 'posts': posts})
