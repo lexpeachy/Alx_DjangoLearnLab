@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from .form import UserRegistrationForm
+from .forms import UserRegistrationForm
 
 def register(request):
     if request.method == 'POST':
@@ -76,7 +76,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from .models import Post, Comment
-from .form import CommentForm
+from .forms import CommentForm
 from django.urls import reverse_lazy
 
 
