@@ -10,21 +10,18 @@ class UserRegistrationForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 
-from .models import Post
-from taggit.forms import TagWidget
-
 from django import forms
-import autocomplete_light
-from autocomplete_light.contrib import taggit_tagfield
-from models import MyModel
+from .models import Post
+from taggit.forms import TagField  # Import the TagField from django-taggit
 
-class MyModelForm(forms.ModelForm):
-    tags = taggit_tagfield.TagField(widget=taggit_tagfield.TagWidget('TagAutocomplete'))
+class PostForm(forms.ModelForm):
+    # Use TagField to enable tagging
+    tags = TagField(required=False, help_text="Add comma-separated tags for this post.")
+
     class Meta:
-        model = MyModel
-        widgets = {
-            'tags': autocomplete_light.TextWidget('TagAutocomplete'),
-        }
+        model = Post
+        fields = ['title', 'content', 'tags']  # Include the 'tags' field
+
 
 
 from .models import Comment
