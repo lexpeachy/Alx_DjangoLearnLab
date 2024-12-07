@@ -11,7 +11,7 @@ class UserRegistrationForm(UserCreationForm):
 
 
 from .models import Post
-from taggit.forms import TagWidget, TagField
+from taggit.forms import TagWidget
 
 class PostForm(forms.ModelForm):
     tags = TagField(widget=TagWidget(attrs={'placeholder': 'Comma-separated tags'}))
@@ -19,6 +19,7 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
+
 
 from .models import Comment
 
