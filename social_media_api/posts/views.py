@@ -80,3 +80,15 @@ class UnlikePostView(APIView):
             return Response({"message": "Post unliked."}, status=status.HTTP_200_OK)
         except Like.DoesNotExist:
             return Response({"error": "You have not liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+
+from .models import Post
+from .serializers import PostSerializer
+
+class FeedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        following_users = request.user.following.all()
+        posts = Post.objects.filter(author__in=following_users).order_by
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data, status=200)
