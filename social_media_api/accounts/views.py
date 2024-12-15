@@ -58,3 +58,15 @@ class UnfollowUserView(generics.GenericAPIView):
             return Response({"message": "Successfully unfollowed user."}, status=status.HTTP_200_OK)
         except CustomUser.DoesNotExist:
             return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+from .models import Post
+from .serializers import PostSerializer
+
+class FeedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        following_users = request.user.following.all()
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data, status=200)
