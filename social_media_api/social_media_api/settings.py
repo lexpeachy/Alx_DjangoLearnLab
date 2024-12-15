@@ -80,10 +80,15 @@ WSGI_APPLICATION = 'social_media_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': ('DB_NAME'),
+        'USER': ('DB_USER'),
+        'PASSWORD': ('DB_PASSWORD'),
+        'HOST': ('DB_HOST'),
+        'PORT': ('DB_PORT'),
     }
 }
+
 
 
 # Password validation
@@ -128,6 +133,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 SECURE_BROWSER_XSS_FILTER=True
-X_FRAME_OPTIONS=True
+X_FRAME_OPTIONS='deny'
 SECURE_CONTENT_TYPE_NOSNIFF=True
 SECURE_SSL_REDIRECT= True
