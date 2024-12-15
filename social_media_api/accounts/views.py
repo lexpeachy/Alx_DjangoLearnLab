@@ -6,7 +6,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from .models import CustomUser
 from .serializers import RegisterSerializer, UserSerializer
-
+permissions.IsAuthenticated
 # Create your views here.
 class RegisterView(APIView):
     def post(self, request):
